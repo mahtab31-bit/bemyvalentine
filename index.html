@@ -1,143 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>For You ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fff1f4, #ffe4ec);
-      color: #2d2d2d;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    .card {
-      max-width: 420px;
-      background: white;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: Inter, sans-serif;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: #e5e7eb;
+    overflow: hidden;
+  }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      margin-bottom: 16px;
-    }
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+  }
 
-    #typewriter {
-      font-size: 16px;
-      line-height: 1.6;
-      min-height: 120px;
-    }
+  .screen.active {
+    display: flex;
+  }
 
-    .photos {
-      display: none;
-      margin: 20px 0;
-      gap: 12px;
-    }
+  .card {
+    max-width: 420px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 24px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 60px rgba(255,255,255,0.05);
+  }
 
-    .photos img {
-      width: 100%;
-      border-radius: 16px;
-    }
+  h1 {
+    font-family: Playfair Display, serif;
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
 
-    button {
-      margin-top: 20px;
-      padding: 14px 28px;
-      border: none;
-      border-radius: 999px;
-      background: #ff4d6d;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
 
-    button:hover {
-      background: #e63e5c;
-    }
+  button {
+    margin-top: 24px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    border: none;
+    background: #f472b6;
+    color: #020617;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-    .final {
-      display: none;
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      margin-top: 24px;
-    }
-  </style>
+  button:hover {
+    background: #fb7185;
+  }
+
+  .photos img {
+    width: 100%;
+    border-radius: 16px;
+    margin: 12px 0;
+  }
+
+  .choices {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+</style>
 </head>
+
 <body>
 
+<!-- SCREEN 1 -->
+<div class="screen active">
   <div class="card">
-    <h1>Hi love 🤍</h1>
+    <h1>What are the odds?</h1>
+    <p>
+      Out of billions of people,<br>
+      infinite timelines,<br>
+      and a thousand tiny decisions…
+    </p>
+    <p>
+      We still found each other.
+    </p>
+    <button onclick="go(1)">Enter the universe</button>
+  </div>
+</div>
 
-    <div id="typewriter"></div>
+<!-- SCREEN 2 -->
+<div class="screen">
+  <div class="card photos">
+    <h1>Some universes look like this</h1>
+    <p>(These moments exist because of you)</p>
 
-    <div class="photos" id="photos">
-      <!-- Upload photos to repo and update filenames -->
-      <img src="photo1.jpg" alt="Us">
-      <img src="photo2.jpg" alt="Us again">
-    </div>
+    <!-- Upload photos to repo and update filenames -->
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
 
-    <button id="continueBtn" style="display:none;" onclick="reveal()">Continue</button>
+    <button onclick="go(2)">Keep going</button>
+  </div>
+</div>
 
-    <div class="final" id="final">
-      Will you be my Valentine? ❤️
+<!-- SCREEN 3 -->
+<div class="screen">
+  <div class="card">
+    <h1>The choice</h1>
+    <p>
+      In every story, there’s a moment<br>
+      where you choose differently.
+    </p>
+
+    <div class="choices">
+      <button onclick="go(3)">Universe A</button>
+      <button onclick="go(3)">Universe B</button>
     </div>
   </div>
+</div>
 
-  <script>
-    const text = [
-      "I could have sent you a message.",
-      "Or bought a card.",
-      "But you know me.",
-      "I like building things.",
-      "",
-      "And if I can build something,",
-      "I can build something just for you.",
-      "",
-      "Every day with you feels like home."
-    ];
+<!-- SCREEN 4 -->
+<div class="screen">
+  <div class="card">
+    <h1>The constant</h1>
+    <p>
+      Different paths.<br>
+      Different lives.<br>
+      Different versions of us.
+    </p>
+    <p>
+      But somehow… I still choose you.
+    </p>
 
-    let i = 0;
-    let line = 0;
-    const speed = 40;
-    const el = document.getElementById("typewriter");
+    <h1 style="margin-top:24px;">Will you be my Valentine? ❤️</h1>
+    <button onclick="celebrate()">Always.</button>
+  </div>
+</div>
 
-    function type() {
-      if (line < text.length) {
-        if (i < text[line].length) {
-          el.innerHTML += text[line].charAt(i);
-          i++;
-          setTimeout(type, speed);
-        } else {
-          el.innerHTML += "<br><br>";
-          i = 0;
-          line++;
-          setTimeout(type, 500);
-        }
-      } else {
-        document.getElementById("continueBtn").style.display = "inline-block";
-      }
-    }
+<script>
+  const screens = document.querySelectorAll('.screen');
+  let current = 0;
 
-    function reveal() {
-      document.getElementById("photos").style.display = "block";
-      document.getElementById("final").style.display = "block";
-      document.getElementById("continueBtn").style.display = "none";
-    }
+  function go(n) {
+    screens[current].classList.remove('active');
+    current = n;
+    screens[current].classList.add('active');
+  }
 
-    type();
-  </script>
+  function celebrate() {
+    confetti({
+      particleCount: 200,
+      spread: 80,
+      origin: { y: 0.6 }
+    });
+  }
+</script>
 
 </body>
 </html>
