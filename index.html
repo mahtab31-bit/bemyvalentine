@@ -133,20 +133,33 @@
 <!-- SCREEN 4 -->
 <div class="screen">
   <div class="card">
-    <h1>The constant</h1>
+    <h1>The final question</h1>
+
     <p>
-      Different paths.<br>
-      Different lives.<br>
-      Different versions of us.
-    </p>
-    <p>
-      But somehow… I still choose you.
+      You’ve made it through timelines,<br>
+      alternate universes,<br>
+      and suspiciously easy choices.
     </p>
 
-    <h1 style="margin-top:24px;">Will you be my Valentine? ❤️</h1>
-    <button onclick="celebrate()">Always.</button>
+    <p style="margin-top:12px;">
+      So now I have to ask.
+    </p>
+
+    <h1 style="margin-top:24px;">
+      Will you be my Valentine? ❤️
+    </h1>
+
+    <div class="choices" style="margin-top:24px;">
+      <button onclick="celebrate()">Yes</button>
+      <button id="noBtn" onclick="runAway()">No</button>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; opacity:0.6;">
+      (Choose wisely. I’m watching.)
+    </p>
   </div>
 </div>
+
 
 <script>
   const screens = document.querySelectorAll('.screen');
@@ -169,6 +182,7 @@
 
 </body>
 </html>
+
 
 
 
