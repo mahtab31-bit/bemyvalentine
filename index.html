@@ -5,86 +5,146 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-  body {
+
+/* GENERAL RESET */
+body {
   margin: 0;
-  font-family: Inter, sans-serif;
-  background: radial-gradient(circle at top, #0f172a, #020617);
-  color: #e5e7eb;
-  overflow-y: auto;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
 
-  .screen {
-    position: absolute;
-    inset: 0;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
-    text-align: center;
-  }
+/* SCREENS */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+}
 
-  .screen.active {
-    display: flex;
-  }
+.screen.active {
+  display: flex;
+}
 
-  .card {
+/* INTRO SCREEN (SOFT) */
+.intro {
+  background: linear-gradient(135deg, #fff1f4, #ffe4ec);
+  color: #2d2d2d;
+}
+
+/* UNIVERSE SCREENS (DARK) */
+.universe {
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: #f8fafc; /* brighter for visibility */
+}
+
+/* CARD */
+.card {
+  max-width: 420px;
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   max-height: 90vh;
   overflow-y: auto;
-  scroll-behavior: smooth;
 }
 
-  h1 {
-    font-family: Playfair Display, serif;
-    font-size: 32px;
-    margin-bottom: 16px;
-  }
+/* INTRO CARD OVERRIDE */
+.intro .card {
+  background: white;
+}
 
-  p {
-    font-size: 16px;
-    line-height: 1.6;
-    opacity: 0.9;
-  }
+/* HEADINGS */
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  margin-bottom: 16px;
+}
 
-  button {
-    margin-top: 24px;
-    padding: 14px 28px;
-    border-radius: 999px;
-    border: none;
-    background: #f472b6;
-    color: #020617;
-    font-size: 16px;
-    cursor: pointer;
-  }
+/* TEXT */
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
 
-  button:hover {
-    background: #fb7185;
-  }
+/* TYPEWRITER */
+#typewriter {
+  min-height: 120px;
+}
 
-  .photos img {
+/* BUTTONS */
+button {
+  margin-top: 20px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* INTRO BUTTON */
+.intro button {
+  background: #ff4d6d;
+  color: white;
+}
+
+.intro button:hover {
+  background: #e63e5c;
+}
+
+/* UNIVERSE BUTTON */
+.universe button {
+  background: #f472b6;
+  color: #020617;
+}
+
+.universe button:hover {
+  background: #fb7185;
+}
+
+/* PHOTOS */
+.photos img {
   width: 100%;
-  max-height: 55vh;
+  max-height: 50vh;
   object-fit: cover;
   border-radius: 16px;
   margin: 12px 0;
 }
 
-  .choices {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-  }
+/* CHOICES */
+.choices {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- SCREEN 1 -->
-<div class="screen active">
+<!-- SCREEN 0 : INTRO -->
+<div class="screen intro active">
+  <div class="card">
+    <h1>Hi love 🤍</h1>
+    <div id="typewriter"></div>
+    <button id="continueBtn" style="display:none;" onclick="go(1)">Continue</button>
+  </div>
+</div>
+
+<!-- SCREEN 1 : UNIVERSE INTRO -->
+<div class="screen universe">
   <div class="card">
     <h1>What are the odds?</h1>
     <p>
@@ -92,30 +152,27 @@
       infinite timelines,<br>
       and a thousand tiny decisions…
     </p>
-    <p>
-      We still found each other.
-    </p>
-    <button onclick="go(1)">Enter the universe</button>
+    <p>We still found each other.</p>
+    <button onclick="go(2)">Enter the universe</button>
   </div>
 </div>
 
-<!-- SCREEN 2 -->
-<div class="screen">
+<!-- SCREEN 2 : PHOTOS -->
+<div class="screen universe">
   <div class="card photos">
     <h1>Some universes look like this</h1>
     <p>(These moments exist because of you)</p>
 
-    <!-- Upload photos to repo and update filenames -->
     <img src="./2.png">
     <img src="./4.png">
     <img src="./3.png">
 
-    <button onclick="go(2)">Keep going</button>
+    <button onclick="go(3)">Keep going</button>
   </div>
 </div>
 
-<!-- SCREEN 3 -->
-<div class="screen">
+<!-- SCREEN 3 : CHOICE -->
+<div class="screen universe">
   <div class="card">
     <h1>The choice</h1>
     <p>
@@ -124,14 +181,14 @@
     </p>
 
     <div class="choices">
-      <button onclick="go(3)">Universe A</button>
-      <button onclick="go(3)">Universe B</button>
+      <button onclick="go(4)">Universe A</button>
+      <button onclick="go(4)">Universe B</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 4 -->
-<div class="screen">
+<!-- SCREEN 4 : FINAL -->
+<div class="screen universe">
   <div class="card">
     <h1>The final question</h1>
 
@@ -141,48 +198,91 @@
       and suspiciously easy choices.
     </p>
 
-    <p style="margin-top:12px;">
-      So now I have to ask.
-    </p>
-
     <h1 style="margin-top:24px;">
       Will you be my Valentine? ❤️
     </h1>
 
     <div class="choices" style="margin-top:24px;">
       <button onclick="celebrate()">Yes</button>
-      <button id="noBtn" onclick="runAway()">No</button>
+      <button id="noBtn">No</button>
     </div>
 
-    <p style="margin-top:16px; font-size:14px; opacity:0.6;">
-      (Choose wisely. I’m watching.)
+    <p style="margin-top:16px; font-size:14px; opacity:0.7;">
+      (Choose wisely.)
     </p>
   </div>
 </div>
 
-
 <script>
-  const screens = document.querySelectorAll('.screen');
-  let current = 0;
 
-  function go(n) {
-    screens[current].classList.remove('active');
-    current = n;
-    screens[current].classList.add('active');
-  }
+/* TYPEWRITER INTRO */
+const text = [
+  "I could have sent you a message.",
+  "Or bought a card.",
+  "But you know me.",
+  "I like building things.",
+  "",
+  "And if I can build something,",
+  "I can build something just for you.",
+  "",
+  "Every day with you feels like home."
+];
 
-  function celebrate() {
-    confetti({
-      particleCount: 200,
-      spread: 80,
-      origin: { y: 0.6 }
-    });
+let i = 0;
+let line = 0;
+const speed = 40;
+const el = document.getElementById("typewriter");
+
+function type() {
+  if (line < text.length) {
+    if (i < text[line].length) {
+      el.innerHTML += text[line].charAt(i);
+      i++;
+      setTimeout(type, speed);
+    } else {
+      el.innerHTML += "<br><br>";
+      i = 0;
+      line++;
+      setTimeout(type, 400);
+    }
+  } else {
+    document.getElementById("continueBtn").style.display = "inline-block";
   }
+}
+type();
+
+/* SCREEN NAVIGATION */
+const screens = document.querySelectorAll('.screen');
+let current = 0;
+
+function go(n) {
+  screens[current].classList.remove('active');
+  current = n;
+  screens[current].classList.add('active');
+}
+
+/* CONFETTI */
+function celebrate() {
+  confetti({
+    particleCount: 250,
+    spread: 100,
+    origin: { y: 0.6 }
+  });
+}
+
+/* FIXED RUNAWAY NO BUTTON */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+function moveButton() {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
 </script>
 
 </body>
 </html>
-
-
-
-
