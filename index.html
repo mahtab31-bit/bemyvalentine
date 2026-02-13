@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For You ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
@@ -13,9 +13,9 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  min-height: 100vh;
+  height: 100vh;
   background: #020617;
-  overflow: hidden;
+  overflow: hidden; /* Strict no-scroll */
 }
 
 /* SCREENS */
@@ -25,7 +25,7 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
   text-align: center;
   z-index: 10;
 }
@@ -34,13 +34,7 @@ body {
   display: flex;
 }
 
-/* INTRO SCREEN */
-.intro {
-  background: linear-gradient(135deg, #fff1f4, #ffe4ec);
-  color: #2d2d2d;
-}
-
-/* UNIVERSE SCREENS */
+/* UNIVERSE BACKGROUND */
 .universe {
   background:
     radial-gradient(circle at 20% 30%, rgba(244,114,182,0.15), transparent 40%),
@@ -49,87 +43,89 @@ body {
   color: #f8fafc;
 }
 
-/* Twinkling Stars Background */
-.universe::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 50px 160px, #f472b6, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 280px 440px, #fff, rgba(0,0,0,0));
-  background-size: 300px 300px;
-  animation: twinkle 4s infinite linear;
-  opacity: 0.4;
-  z-index: -1;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
 /* CARD */
 .card {
   max-width: 420px;
   width: 100%;
   background: rgba(255,255,255,0.08);
   border-radius: 24px;
-  padding: 28px;
+  padding: 24px;
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  max-height: 90vh;
-  overflow-y: auto;
   position: relative;
   z-index: 20;
 }
 
 .intro .card { background: white; color: #2d2d2d; }
 
-h1 { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 16px; }
-p { font-size: 16px; line-height: 1.6; opacity: 0.95; }
-
-#typewriter { min-height: 120px; }
+h1 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 12px; }
+p { font-size: 14px; line-height: 1.5; opacity: 0.95; }
 
 button {
-  margin-top: 20px;
-  padding: 14px 28px;
+  margin-top: 15px;
+  padding: 12px 24px;
   border-radius: 999px;
   border: none;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s ease;
 }
 
 .intro button { background: #ff4d6d; color: white; }
 .universe button { background: #f472b6; color: #020617; font-weight: 600; }
-.universe button:hover { transform: scale(1.05); background: #fb7185; }
 
-/* ORBIT SYSTEM */
-.orbit { position: relative; width: 300px; height: 350px; margin: 20px auto; }
+/* ORBIT SYSTEM - FIXED TO VIEWPORT */
+.orbit { 
+  position: relative; 
+  width: 100%; 
+  height: 45vh; /* Fixed height to prevent vertical scrolling */
+  margin: 10px auto; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .orbit-center {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  font-family: 'Playfair Display', serif; font-size: 18px; color: #f472b6;
+  font-family: 'Playfair Display', serif; 
+  font-size: 16px; 
+  color: #f472b6;
   z-index: 5;
 }
+
 .planet {
-  position: absolute; top: 50%; left: 50%; width: 85px; height: 85px;
-  margin: -42.5px; border-radius: 50%; overflow: hidden;
-  box-shadow: 0 0 20px rgba(244,114,182,0.4); border: 2px solid rgba(255,255,255,0.4);
+  position: absolute; 
+  width: 60px; 
+  height: 60px;
+  border-radius: 50%; 
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(244,114,182,0.4); 
+  border: 2px solid rgba(255,255,255,0.4);
 }
 .planet img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Unique Orbit Diameters for visibility */
-.p1 { animation: orb 15s linear infinite; --d: 105px; }
-.p2 { animation: orb 22s linear infinite reverse; --d: 115px; }
-.p3 { animation: orb 30s linear infinite; --d: 130px; }
-.p4 { animation: orb 18s linear infinite; --d: 145px; --delay: -2s; }
-.p5 { animation: orb 25s linear infinite reverse; --d: 160px; --delay: -5s; }
-.p6 { animation: orb 20s linear infinite; --d: 185px; --delay: -10s; }
-.p7 { animation: orb 28s linear infinite reverse; --d: 200px; --delay: -3s; }
-.p8 { animation: orb 14s linear infinite; --d: 215px; --delay: -8s; --speed: 14s;}
-.p9 { animation: orb 35s linear infinite reverse; --d: 230px; --delay: -12s; }
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .planet { width: 50px; height: 50px; }
+  h1 { font-size: 20px; }
+}
+
+/* Controlled Orbit Distances using vh/vw to ensure they stay on screen */
+.p1 { animation: orb 12s linear infinite; --d: 18vw; }
+.p2 { animation: orb 18s linear infinite reverse; --d: 22vw; }
+.p3 { animation: orb 25s linear infinite; --d: 28vw; }
+.p4 { animation: orb 15s linear infinite; --d: 14vw; --delay: -2s; }
+.p5 { animation: orb 22s linear infinite reverse; --d: 32vw; --delay: -5s; }
+.p6 { animation: orb 20s linear infinite; --d: 10vw; --delay: -10s; }
+.p7 { animation: orb 28s linear infinite reverse; --d: 36vw; --delay: -3s; }
+.p8 { animation: orb 14s linear infinite; --d: 25vw; --delay: -8s; }
+.p9 { animation: orb 32s linear infinite reverse; --d: 12vw; --delay: -12s; }
+
+/* Keep distance responsive on vertical screens */
+@media (orientation: portrait) {
+  .p1 { --d: 12vh; } .p2 { --d: 15vh; } .p3 { --d: 18vh; }
+  .p4 { --d: 21vh; } .p5 { --d: 24vh; } .p6 { --d: 9vh; }
+  .p7 { --d: 11vh; } .p8 { --d: 13vh; } .p9 { --d: 16vh; }
+}
 
 @keyframes orb {
   from { transform: rotate(0deg) translateX(var(--d)) rotate(0deg); }
@@ -146,20 +142,8 @@ button {
   100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
-/* BUTTON WRAPPER */
-.choices { 
-  display: flex; 
-  gap: 16px; 
-  justify-content: center; 
-  align-items: center;
-  position: relative; 
-  min-height: 100px; 
-}
-
-#noBtn {
-  position: relative;
-  transition: transform 0.2s ease, top 0.2s ease, left 0.2s ease;
-}
+.choices { display: flex; gap: 12px; justify-content: center; align-items: center; position: relative; min-height: 80px; }
+#noBtn { position: relative; transition: all 0.2s ease; }
 </style>
 </head>
 <body>
@@ -171,7 +155,7 @@ button {
 <div class="screen intro active">
   <div class="card">
     <h1>Hi love 🤍</h1>
-    <div id="typewriter"></div>
+    <div id="typewriter" style="min-height: 100px;"></div>
     <button id="continueBtn" style="display:none;" onclick="startUniverse()">Continue</button>
   </div>
 </div>
@@ -179,16 +163,14 @@ button {
 <div class="screen universe">
   <div class="card">
     <h1>What are the odds?</h1>
-    <p>Out of billions of people,<br>infinite timelines,<br>and a thousand tiny decisions…</p>
-    <p>We still found each other.</p>
+    <p>Out of billions of people, infinite timelines,<br>and a thousand tiny decisions…<br>We still found each other.</p>
     <button onclick="go(1)">Enter the universe</button>
   </div>
 </div>
 
 <div class="screen universe">
-  <div class="card" style="background: transparent; box-shadow: none; max-width: 500px;">
-    <h1>Our little universe</h1>
-    <p>Every memory has its own orbit.</p>
+  <div class="card" style="background: transparent; box-shadow: none; max-width: 95vw; padding: 10px;">
+    <h1 style="margin: 0;">Our little universe</h1>
     <div class="orbit">
       <div class="orbit-center">You & Me ✨</div>
       <div class="planet p1"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM.jpeg"></div>
@@ -208,65 +190,43 @@ button {
 <div class="screen universe">
   <div class="card">
     <h1>Infinite Realities</h1>
-    <p>In one universe, we never met.<br>In another, we stayed strangers.</p>
-    <p>But in <b>this one</b>, I'm yours.</p>
-    <div class="choices">
-      <button onclick="go(3)">The best timeline</button>
-    </div>
+    <p>In one universe, we never met. In another, we stayed strangers.<br>But in <b>this one</b>, I'm yours.</p>
+    <button onclick="go(3)">The best timeline</button>
   </div>
 </div>
 
 <div id="screen-final" class="screen universe">
   <div class="card" id="finalCard">
     <h1 id="final-heading">The final question</h1>
-    <p>You’ve made it through timelines,<br>alternate universes,<br>and suspiciously easy choices.</p>
-    <h1 style="margin-top:24px;">Will you be my Valentine? ❤️</h1>
+    <p>Will you be my Valentine? ❤️</p>
     <div class="choices" id="choiceArea">
       <button onclick="celebrate()">Yes</button>
       <button id="noBtn">No</button>
     </div>
-    <p style="margin-top:16px; font-size:14px; opacity:0.7;">(Choose wisely.)</p>
+    <p style="margin-top:10px; font-size:12px; opacity:0.7;">(Choose wisely.)</p>
   </div>
 </div>
 
 <script>
-const text = [
-  "I could have sent you a message.",
-  "Or bought a card.",
-  "But you know me.",
-  "I like building things.",
-  "",
-  "And if I can build something,",
-  "I can build something just for you.",
-  "",
-  "Out of everything I could have built…",
-  "I’m just glad I built this with you."
-];
-
+const text = ["I could have sent you a message.","Or bought a card.","But you know me.","I like building things.","","And if I can build something,","I can build something just for you.","","Out of everything I could have built…","I’m just glad I built this with you."];
 let i = 0, line = 0;
-const speed = 40;
 const el = document.getElementById("typewriter");
 
 function type() {
   if (line < text.length) {
     if (i < text[line].length) {
-      el.innerHTML += text[line].charAt(i);
-      i++;
-      setTimeout(type, speed);
+      el.innerHTML += text[line].charAt(i); i++;
+      setTimeout(type, 40);
     } else {
-      el.innerHTML += "<br>";
-      i = 0; line++;
+      el.innerHTML += "<br>"; i = 0; line++;
       setTimeout(type, 600);
     }
-  } else {
-    document.getElementById("continueBtn").style.display = "inline-block";
-  }
+  } else { document.getElementById("continueBtn").style.display = "inline-block"; }
 }
 type();
 
 const screens = document.querySelectorAll('.screen');
 let current = 0;
-
 function go(n) {
   screens[current].classList.remove('active');
   current = n + 1;
@@ -281,21 +241,7 @@ function startUniverse() {
 }
 
 function celebrate() {
-  const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: ['heart'], colors: ['#ff4d6d', '#f472b6'] };
-  confetti({ ...defaults, particleCount: 100, scalar: 2 });
-  
-  for (let i = 0; i < 25; i++) {
-    setTimeout(() => {
-      const heart = document.createElement('div');
-      heart.classList.add('floating-heart');
-      heart.innerHTML = '❤️';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
-    }, i * 200);
-  }
-
+  confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#f472b6'] });
   document.getElementById('final-heading').innerHTML = "Yay! See you tonight! 🥰";
   document.getElementById('noBtn').style.display = 'none';
 }
@@ -308,26 +254,15 @@ noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 function moveButton() {
-  if(!hasMoved) {
-      noBtn.style.position = 'absolute';
-      hasMoved = true;
-  }
-  
+  if(!hasMoved) { noBtn.style.position = 'absolute'; hasMoved = true; }
   const cardRect = finalCard.getBoundingClientRect();
   const btnRect = noBtn.getBoundingClientRect();
-
-  const maxX = cardRect.width - btnRect.width - 40;
-  const maxY = cardRect.height - btnRect.height - 40;
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
-  noBtn.style.margin = "0";
+  const maxX = cardRect.width - btnRect.width - 20;
+  const maxY = cardRect.height - btnRect.height - 20;
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 }
 </script>
 
 </body>
 </html>
-
