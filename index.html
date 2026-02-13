@@ -165,6 +165,27 @@ button {
   100% { transform: translate(60px,40px); }
 }
 
+  /* Twinkling Stars Background */
+.universe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #f472b6, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 80px 40px, #fff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  animation: twinkle 4s infinite linear;
+  opacity: 0.3;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  50% { opacity: 0.5; }
+  to { opacity: 0.2; }
+}
+
 /* Subtle stars */
 .universe {
   position: relative;
@@ -284,15 +305,14 @@ button {
 <!-- SCREEN 3 : CHOICE -->
 <div class="screen universe">
   <div class="card">
-    <h1>The choice</h1>
+    <h1>Infinite Realities</h1>
     <p>
-      In every story, there’s a moment<br>
-      where you choose differently.
+      In one universe, we never met.<br>
+      In another, we stayed strangers.
     </p>
-
+    <p>But in <b>this one</b>, I'm yours.</p>
     <div class="choices">
-      <button onclick="go(4)">Universe A</button>
-      <button onclick="go(4)">Universe B</button>
+      <button onclick="go(4)">The best timeline</button>
     </div>
   </div>
 </div>
@@ -373,11 +393,30 @@ function go(n) {
 
 /* CONFETTI */
 function celebrate() {
+  const defaults = {
+    spread: 360,
+    ticks: 100,
+    gravity: 0.5,
+    decay: 0.94,
+    startVelocity: 30,
+    shapes: ['heart'], // <--- HEART SHAPE
+    colors: ['#ff4d6d', '#ff8fa3', '#ffb3c1']
+  };
+
   confetti({
-    particleCount: 250,
-    spread: 100,
-    origin: { y: 0.6 }
+    ...defaults,
+    particleCount: 80,
+    scalar: 2
   });
+
+  confetti({
+    ...defaults,
+    particleCount: 40,
+    scalar: 1.2
+  });
+  
+  // Change the text after clicking Yes
+  document.querySelector('#screen-final h1').innerHTML = "See you tonight! ❤️";
 }
 
 /* FIXED RUNAWAY NO BUTTON */
@@ -387,14 +426,19 @@ noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", moveButton);
 
 function moveButton() {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 200 - 100;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+  noBtn.style.transition = '0.2s all ease';
 }
 
 </script>
 
 </body>
 </html>
+
 
 
