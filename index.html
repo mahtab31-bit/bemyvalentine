@@ -99,7 +99,7 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .intro button { background: #ff4d6d; color: white; }
@@ -146,13 +146,26 @@ button {
   100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
-.choices { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+/* BUTTON WRAPPER FOR YES/NO */
+.choices { 
+  display: flex; 
+  gap: 16px; 
+  justify-content: center; 
+  align-items: center;
+  position: relative; 
+  min-height: 120px; 
+}
+
+#noBtn {
+  position: relative;
+  transition: all 0.2s ease;
+}
 </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop>
-  <source src="https://www.chosic.com/wp-content/uploads/2021/07/Rain-on-the-window.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
 
 <div class="screen intro active">
@@ -168,7 +181,7 @@ button {
     <h1>What are the odds?</h1>
     <p>Out of billions of people,<br>infinite timelines,<br>and a thousand tiny decisions…</p>
     <p>We still found each other.</p>
-    <button onclick="go(2)">Enter the universe</button>
+    <button onclick="go(1)">Enter the universe</button>
   </div>
 </div>
 
@@ -178,11 +191,11 @@ button {
     <p>Every memory has its own orbit.</p>
     <div class="orbit">
       <div class="orbit-center">You & Me ✨</div>
-      <div class="planet p1"><img src="./2.png" alt="Mem 1"></div>
-      <div class="planet p2"><img src="./4.png" alt="Mem 2"></div>
-      <div class="planet p3"><img src="./3.png" alt="Mem 3"></div>
+      <div class="planet p1"><img src="./2.png" alt="Memory 1"></div>
+      <div class="planet p2"><img src="./4.png" alt="Memory 2"></div>
+      <div class="planet p3"><img src="./3.png" alt="Memory 3"></div>
     </div>
-    <button onclick="go(3)">Keep going</button>
+    <button onclick="go(2)">Keep going</button>
   </div>
 </div>
 
@@ -192,17 +205,17 @@ button {
     <p>In one universe, we never met.<br>In another, we stayed strangers.</p>
     <p>But in <b>this one</b>, I'm yours.</p>
     <div class="choices">
-      <button onclick="go(4)">The best timeline</button>
+      <button onclick="go(3)">The best timeline</button>
     </div>
   </div>
 </div>
 
 <div id="screen-final" class="screen universe">
-  <div class="card">
+  <div class="card" id="finalCard">
     <h1 id="final-heading">The final question</h1>
     <p>You’ve made it through timelines,<br>alternate universes,<br>and suspiciously easy choices.</p>
     <h1 style="margin-top:24px;">Will you be my Valentine? ❤️</h1>
-    <div class="choices" style="margin-top:24px; position: relative; min-height: 100px;">
+    <div class="choices" id="choiceArea">
       <button onclick="celebrate()">Yes</button>
       <button id="noBtn">No</button>
     </div>
@@ -211,6 +224,7 @@ button {
 </div>
 
 <script>
+/* UPDATED WORDS */
 const text = [
   "I could have sent you a message.",
   "Or bought a card.",
@@ -220,7 +234,8 @@ const text = [
   "And if I can build something,",
   "I can build something just for you.",
   "",
-  "Every day with you feels like home."
+  "Out of everything I could have built…",
+  "I’m just glad I built this with you."
 ];
 
 let i = 0, line = 0;
@@ -249,22 +264,21 @@ let current = 0;
 
 function go(n) {
   screens[current].classList.remove('active');
-  current = n;
+  current = n + 1;
   screens[current].classList.add('active');
 }
 
 function startUniverse() {
-  document.getElementById("bgMusic").play();
-  go(1);
+  const audio = document.getElementById("bgMusic");
+  audio.volume = 0.4;
+  audio.play().catch(e => console.log("Audio play blocked", e));
+  go(0);
 }
 
 function celebrate() {
-  // 1. Heart Confetti
   const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: ['heart'], colors: ['#ff4d6d', '#f472b6'] };
   confetti({ ...defaults, particleCount: 100, scalar: 2 });
-  confetti({ ...defaults, particleCount: 50, scalar: 1.2 });
-
-  // 2. Spawn Floating Hearts
+  
   for (let i = 0; i < 20; i++) {
     setTimeout(() => {
       const heart = document.createElement('div');
@@ -277,22 +291,29 @@ function celebrate() {
     }, i * 250);
   }
 
-  // 3. UI Changes
   document.getElementById('final-heading').innerHTML = "Yay! See you tonight! 🥰";
   document.getElementById('noBtn').style.display = 'none';
 }
 
+/* NO BUTTON STAY-IN-BOX LOGIC */
 const noBtn = document.getElementById("noBtn");
+const finalCard = document.getElementById("finalCard");
+
 noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 function moveButton() {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-  noBtn.style.zIndex = "999";
+  const cardRect = finalCard.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  // Define limits (padding of 40px inside the card)
+  const maxX = (cardRect.width / 2) - (btnRect.width / 2) - 40;
+  const maxY = (cardRect.height / 2) - (btnRect.height / 2) - 40;
+
+  const randomX = (Math.random() * maxX * 2) - maxX;
+  const randomY = (Math.random() * maxY * 2) - maxY;
+
+  noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
 }
 </script>
 
