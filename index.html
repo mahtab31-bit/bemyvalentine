@@ -146,26 +146,26 @@ button {
   100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
-/* BUTTON WRAPPER FOR YES/NO */
+/* BUTTON WRAPPER */
 .choices { 
   display: flex; 
   gap: 16px; 
   justify-content: center; 
   align-items: center;
   position: relative; 
-  min-height: 120px; 
+  min-height: 100px; 
 }
 
 #noBtn {
-  position: relative;
-  transition: all 0.2s ease;
+  position: relative; /* Fixed: starts relative in the layout */
+  transition: transform 0.2s ease, top 0.2s ease, left 0.2s ease;
 }
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="https://www.chosic.com/wp-content/uploads/2021/04/Lofi-Study-Calm-Peaceful-Piano.mp3" type="audio/mpeg">
 </audio>
 
 <div class="screen intro active">
@@ -191,9 +191,9 @@ button {
     <p>Every memory has its own orbit.</p>
     <div class="orbit">
       <div class="orbit-center">You & Me ✨</div>
-      <div class="planet p1"><img src="./2.png" alt="Memory 1"></div>
-      <div class="planet p2"><img src="./4.png" alt="Memory 2"></div>
-      <div class="planet p3"><img src="./3.png" alt="Memory 3"></div>
+      <div class="planet p1"><img src="./2.png" alt="Mem 1"></div>
+      <div class="planet p2"><img src="./4.png" alt="Mem 2"></div>
+      <div class="planet p3"><img src="./3.png" alt="Mem 3"></div>
     </div>
     <button onclick="go(2)">Keep going</button>
   </div>
@@ -224,7 +224,6 @@ button {
 </div>
 
 <script>
-/* UPDATED WORDS */
 const text = [
   "I could have sent you a message.",
   "Or bought a card.",
@@ -270,8 +269,8 @@ function go(n) {
 
 function startUniverse() {
   const audio = document.getElementById("bgMusic");
-  audio.volume = 0.4;
-  audio.play().catch(e => console.log("Audio play blocked", e));
+  audio.volume = 0.5;
+  audio.play().catch(e => console.log("Audio failed", e));
   go(0);
 }
 
@@ -279,7 +278,7 @@ function celebrate() {
   const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: ['heart'], colors: ['#ff4d6d', '#f472b6'] };
   confetti({ ...defaults, particleCount: 100, scalar: 2 });
   
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 25; i++) {
     setTimeout(() => {
       const heart = document.createElement('div');
       heart.classList.add('floating-heart');
@@ -288,32 +287,41 @@ function celebrate() {
       heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 5000);
-    }, i * 250);
+    }, i * 200);
   }
 
   document.getElementById('final-heading').innerHTML = "Yay! See you tonight! 🥰";
   document.getElementById('noBtn').style.display = 'none';
 }
 
-/* NO BUTTON STAY-IN-BOX LOGIC */
+/* IMPROVED NO BUTTON: Starts static, stays within card area */
 const noBtn = document.getElementById("noBtn");
 const finalCard = document.getElementById("finalCard");
+let hasMoved = false;
 
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 function moveButton() {
+  if(!hasMoved) {
+      // First time moving: switch to absolute so it can jump freely inside card
+      noBtn.style.position = 'absolute';
+      hasMoved = true;
+  }
+  
   const cardRect = finalCard.getBoundingClientRect();
   const btnRect = noBtn.getBoundingClientRect();
 
-  // Define limits (padding of 40px inside the card)
-  const maxX = (cardRect.width / 2) - (btnRect.width / 2) - 40;
-  const maxY = (cardRect.height / 2) - (btnRect.height / 2) - 40;
+  // Stay within card bounds (with 40px padding)
+  const maxX = cardRect.width - btnRect.width - 40;
+  const maxY = cardRect.height - btnRect.height - 40;
 
-  const randomX = (Math.random() * maxX * 2) - maxX;
-  const randomY = (Math.random() * maxY * 2) - maxY;
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
 
-  noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+  noBtn.style.margin = "0"; // Remove default margins once it's flying
 }
 </script>
 
