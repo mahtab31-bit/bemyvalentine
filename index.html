@@ -9,13 +9,13 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-
 /* GENERAL RESET */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
   background: #020617;
+  overflow: hidden;
 }
 
 /* SCREENS */
@@ -27,28 +27,47 @@ body {
   align-items: center;
   padding: 24px;
   text-align: center;
+  z-index: 10;
 }
 
 .screen.active {
   display: flex;
 }
 
-/* INTRO SCREEN (SOFT) */
+/* INTRO SCREEN */
 .intro {
   background: linear-gradient(135deg, #fff1f4, #ffe4ec);
   color: #2d2d2d;
 }
 
-/* UNIVERSE SCREENS (DARK) */
+/* UNIVERSE SCREENS */
 .universe {
   background:
     radial-gradient(circle at 20% 30%, rgba(244,114,182,0.15), transparent 40%),
     radial-gradient(circle at 80% 70%, rgba(168,85,247,0.15), transparent 40%),
     radial-gradient(circle at top, #0f172a, #020617);
   color: #f8fafc;
-  position: fixed;
+}
+
+/* Twinkling Stars Background */
+.universe::before {
+  content: "";
+  position: absolute;
   inset: 0;
-  overflow: hidden;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #f472b6, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 280px 440px, #fff, rgba(0,0,0,0));
+  background-size: 300px 300px;
+  animation: twinkle 4s infinite linear;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
 }
 
 /* CARD */
@@ -62,33 +81,17 @@ body {
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   max-height: 90vh;
   overflow-y: auto;
+  position: relative;
+  z-index: 20;
 }
 
-/* INTRO CARD OVERRIDE */
-.intro .card {
-  background: white;
-}
+.intro .card { background: white; color: #2d2d2d; }
 
-/* HEADINGS */
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 30px;
-  margin-bottom: 16px;
-}
+h1 { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 16px; }
+p { font-size: 16px; line-height: 1.6; opacity: 0.95; }
 
-/* TEXT */
-p {
-  font-size: 16px;
-  line-height: 1.6;
-  opacity: 0.95;
-}
+#typewriter { min-height: 120px; }
 
-/* TYPEWRITER */
-#typewriter {
-  min-height: 120px;
-}
-
-/* BUTTONS */
 button {
   margin-top: 20px;
   padding: 14px 28px;
@@ -96,220 +99,97 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* INTRO BUTTON */
-.intro button {
-  background: #ff4d6d;
-  color: white;
-}
+.intro button { background: #ff4d6d; color: white; }
+.universe button { background: #f472b6; color: #020617; font-weight: 600; }
+.universe button:hover { transform: scale(1.05); background: #fb7185; }
 
-.intro button:hover {
-  background: #e63e5c;
-}
-
-/* UNIVERSE BUTTON */
-.universe button {
-  background: #f472b6;
-  color: #020617;
-}
-
-.universe button:hover {
-  background: #fb7185;
-}
-
-/* PHOTOS */
-.photos img {
-  width: 100%;
-  max-height: 50vh;
-  object-fit: cover;
-  border-radius: 16px;
-  margin: 12px 0;
-}
-
-/* CHOICES */
-.choices {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-  /* FLOATING BACKGROUND BLOBS */
-.universe::before,
-.universe::after {
-  content: "";
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(244,114,182,0.25), transparent 70%);
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: floatBlob 20s infinite alternate ease-in-out;
-  z-index: 0;
-}
-
-.universe::before {
-  top: -100px;
-  left: -100px;
-}
-
-.universe::after {
-  bottom: -120px;
-  right: -120px;
-  background: radial-gradient(circle, rgba(236,72,153,0.25), transparent 70%);
-}
-
-@keyframes floatBlob {
-  0% { transform: translate(0,0); }
-  100% { transform: translate(60px,40px); }
-}
-
-  /* Twinkling Stars Background */
-.universe::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 50px 160px, #f472b6, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 80px 40px, #fff, rgba(0,0,0,0));
-  background-size: 200px 200px;
-  animation: twinkle 4s infinite linear;
-  opacity: 0.3;
-}
-
-@keyframes twinkle {
-  from { opacity: 0.2; }
-  50% { opacity: 0.5; }
-  to { opacity: 0.2; }
-}
-
-/* Subtle stars */
-.universe {
-  position: relative;
-  /*overflow: hidden;*/
-}
-
-.universe::selection {
-  background: #f472b6;
-}
-  .orbit {
-  position: relative;
-  width: 320px;
-  height: 320px;
-  margin: 40px auto;
-}
-
-/* Center Text */
+/* ORBIT SYSTEM */
+.orbit { position: relative; width: 300px; height: 300px; margin: 40px auto; }
 .orbit-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  letter-spacing: 1px;
-  opacity: 0.9;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif; font-size: 18px; color: #f472b6;
 }
-
-/* Planets */
 .planet {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 90px;
-  height: 90px;
-  margin: -45px;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(244,114,182,0.3);
+  position: absolute; top: 50%; left: 50%; width: 80px; height: 80px;
+  margin: -40px; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 0 20px rgba(244,114,182,0.3); border: 2px solid rgba(255,255,255,0.2);
 }
+.planet img { width: 100%; height: 100%; object-fit: cover; }
 
-.planet img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Individual orbit speeds */
-.p1 { animation: orbit1 20s linear infinite; }
-.p2 { animation: orbit2 28s linear infinite reverse; }
-.p3 { animation: orbit3 36s linear infinite; }
+.p1 { animation: orbit1 15s linear infinite; }
+.p2 { animation: orbit2 22s linear infinite reverse; }
+.p3 { animation: orbit3 30s linear infinite; }
 
 @keyframes orbit1 {
-  from { transform: rotate(0deg) translateX(130px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
+  from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
 }
-
 @keyframes orbit2 {
-  from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+  from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
 }
-
 @keyframes orbit3 {
-  from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+  from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
 }
 
+/* FLOATING HEARTS */
+.floating-heart {
+  position: absolute; color: #ff4d6d; font-size: 24px;
+  animation: floatUp 4s linear forwards; pointer-events: none; z-index: 100;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+.choices { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 </style>
 </head>
-
 <body>
 
-<!-- SCREEN 0 : INTRO -->
+<audio id="bgMusic" loop>
+  <source src="https://www.chosic.com/wp-content/uploads/2021/07/Rain-on-the-window.mp3" type="audio/mpeg">
+</audio>
+
 <div class="screen intro active">
   <div class="card">
     <h1>Hi love 🤍</h1>
     <div id="typewriter"></div>
-    <button id="continueBtn" style="display:none;" onclick="go(1)">Continue</button>
+    <button id="continueBtn" style="display:none;" onclick="startUniverse()">Continue</button>
   </div>
 </div>
 
-<!-- SCREEN 1 : UNIVERSE INTRO -->
 <div class="screen universe">
   <div class="card">
     <h1>What are the odds?</h1>
-    <p>
-      Out of billions of people,<br>
-      infinite timelines,<br>
-      and a thousand tiny decisions…
-    </p>
+    <p>Out of billions of people,<br>infinite timelines,<br>and a thousand tiny decisions…</p>
     <p>We still found each other.</p>
     <button onclick="go(2)">Enter the universe</button>
   </div>
 </div>
 
-<!-- SCREEN 2 : ORBIT PHOTOS -->
 <div class="screen universe">
   <div class="card" style="background: transparent; box-shadow: none;">
     <h1>Our little universe</h1>
-    <p style="margin-bottom:30px;">
-      Every memory has its own orbit.
-    </p>
-
+    <p>Every memory has its own orbit.</p>
     <div class="orbit">
-  <div class="orbit-center">You & Me ✨</div>
-
-  <div class="planet p1"><img src="./2.png"></div>
-  <div class="planet p2"><img src="./4.png"></div>
-  <div class="planet p3"><img src="./3.png"></div>
-</div>
-
+      <div class="orbit-center">You & Me ✨</div>
+      <div class="planet p1"><img src="./2.png" alt="Mem 1"></div>
+      <div class="planet p2"><img src="./4.png" alt="Mem 2"></div>
+      <div class="planet p3"><img src="./3.png" alt="Mem 3"></div>
+    </div>
     <button onclick="go(3)">Keep going</button>
   </div>
 </div>
 
-
-<!-- SCREEN 3 : CHOICE -->
 <div class="screen universe">
   <div class="card">
     <h1>Infinite Realities</h1>
-    <p>
-      In one universe, we never met.<br>
-      In another, we stayed strangers.
-    </p>
+    <p>In one universe, we never met.<br>In another, we stayed strangers.</p>
     <p>But in <b>this one</b>, I'm yours.</p>
     <div class="choices">
       <button onclick="go(4)">The best timeline</button>
@@ -317,35 +197,20 @@ button {
   </div>
 </div>
 
-<!-- SCREEN 4 : FINAL -->
-<div class="screen universe">
+<div id="screen-final" class="screen universe">
   <div class="card">
-    <h1>The final question</h1>
-
-    <p>
-      You’ve made it through timelines,<br>
-      alternate universes,<br>
-      and suspiciously easy choices.
-    </p>
-
-    <h1 style="margin-top:24px;">
-      Will you be my Valentine? ❤️
-    </h1>
-
-    <div class="choices" style="margin-top:24px;">
+    <h1 id="final-heading">The final question</h1>
+    <p>You’ve made it through timelines,<br>alternate universes,<br>and suspiciously easy choices.</p>
+    <h1 style="margin-top:24px;">Will you be my Valentine? ❤️</h1>
+    <div class="choices" style="margin-top:24px; position: relative; min-height: 100px;">
       <button onclick="celebrate()">Yes</button>
       <button id="noBtn">No</button>
     </div>
-
-    <p style="margin-top:16px; font-size:14px; opacity:0.7;">
-      (Choose wisely.)
-    </p>
+    <p style="margin-top:16px; font-size:14px; opacity:0.7;">(Choose wisely.)</p>
   </div>
 </div>
 
 <script>
-
-/* TYPEWRITER INTRO */
 const text = [
   "I could have sent you a message.",
   "Or bought a card.",
@@ -358,8 +223,7 @@ const text = [
   "Every day with you feels like home."
 ];
 
-let i = 0;
-let line = 0;
+let i = 0, line = 0;
 const speed = 40;
 const el = document.getElementById("typewriter");
 
@@ -370,10 +234,9 @@ function type() {
       i++;
       setTimeout(type, speed);
     } else {
-      el.innerHTML += "<br><br>";
-      i = 0;
-      line++;
-      setTimeout(type, 400);
+      el.innerHTML += "<br>";
+      i = 0; line++;
+      setTimeout(type, 600);
     }
   } else {
     document.getElementById("continueBtn").style.display = "inline-block";
@@ -381,7 +244,6 @@ function type() {
 }
 type();
 
-/* SCREEN NAVIGATION */
 const screens = document.querySelectorAll('.screen');
 let current = 0;
 
@@ -391,54 +253,48 @@ function go(n) {
   screens[current].classList.add('active');
 }
 
-/* CONFETTI */
-function celebrate() {
-  const defaults = {
-    spread: 360,
-    ticks: 100,
-    gravity: 0.5,
-    decay: 0.94,
-    startVelocity: 30,
-    shapes: ['heart'], // <--- HEART SHAPE
-    colors: ['#ff4d6d', '#ff8fa3', '#ffb3c1']
-  };
-
-  confetti({
-    ...defaults,
-    particleCount: 80,
-    scalar: 2
-  });
-
-  confetti({
-    ...defaults,
-    particleCount: 40,
-    scalar: 1.2
-  });
-  
-  // Change the text after clicking Yes
-  document.querySelector('#screen-final h1').innerHTML = "See you tonight! ❤️";
+function startUniverse() {
+  document.getElementById("bgMusic").play();
+  go(1);
 }
 
-/* FIXED RUNAWAY NO BUTTON */
-const noBtn = document.getElementById("noBtn");
+function celebrate() {
+  // 1. Heart Confetti
+  const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: ['heart'], colors: ['#ff4d6d', '#f472b6'] };
+  confetti({ ...defaults, particleCount: 100, scalar: 2 });
+  confetti({ ...defaults, particleCount: 50, scalar: 1.2 });
 
+  // 2. Spawn Floating Hearts
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, i * 250);
+  }
+
+  // 3. UI Changes
+  document.getElementById('final-heading').innerHTML = "Yay! See you tonight! 🥰";
+  document.getElementById('noBtn').style.display = 'none';
+}
+
+const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("click", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
 
 function moveButton() {
   const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
   const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  
-  noBtn.style.position = 'absolute';
+  noBtn.style.position = 'fixed';
   noBtn.style.left = x + 'px';
   noBtn.style.top = y + 'px';
-  noBtn.style.transition = '0.2s all ease';
+  noBtn.style.zIndex = "999";
 }
-
 </script>
 
 </body>
 </html>
-
-
-
