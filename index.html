@@ -15,7 +15,7 @@ body {
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
   background: #020617;
-  overflow: hidden;
+  overflow: hidden; /* Prevents whole-page scrolling */
 }
 
 /* SCREENS */
@@ -76,13 +76,12 @@ body {
   width: 100%;
   background: rgba(255,255,255,0.08);
   border-radius: 24px;
-  padding: 28px;
+  padding: 35px 28px;
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  max-height: 90vh;
-  overflow-y: auto;
   position: relative;
   z-index: 20;
+  overflow: visible; /* CRITICAL: Allows No button to move without scrollbars */
 }
 
 .intro .card { background: white; color: #2d2d2d; }
@@ -99,7 +98,7 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.2s ease;
 }
 
 .intro button { background: #ff4d6d; color: white; }
@@ -153,7 +152,7 @@ button {
   justify-content: center; 
   align-items: center;
   position: relative; 
-  min-height: 100px; 
+  margin-top: 20px;
 }
 
 #noBtn {
@@ -224,6 +223,7 @@ button {
 </div>
 
 <script>
+/* YOUR CUSTOM TEXT */
 const text = [
   "I could have sent you a message.",
   "Or bought a card.",
@@ -269,11 +269,8 @@ function go(n) {
 
 function startUniverse() {
   const audio = document.getElementById("bgMusic");
-  audio.volume = 0.5;
-  audio.play().catch(e => {
-      console.log("Autoplay check:", e);
-      // Browser might need one more click if it's very strict
-  });
+  audio.volume = 0.4;
+  audio.play().catch(e => console.log("Audio play failed", e));
   go(0);
 }
 
@@ -297,26 +294,23 @@ function celebrate() {
   document.getElementById('noBtn').style.display = 'none';
 }
 
-/* NO BUTTON Logic - Starts static, moves only on hover */
+/* NO BUTTON FIXED LOGIC: Starts static, moves to fixed screen space */
 const noBtn = document.getElementById("noBtn");
-const finalCard = document.getElementById("finalCard");
 
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 function moveButton() {
-  const cardRect = finalCard.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
+  // Switch to fixed position relative to the screen, NOT the card
+  // This prevents the card from growing and showing scrollbars
+  noBtn.style.position = 'fixed';
 
-  // Set to absolute only after first hover to allow "jumping"
-  noBtn.style.position = 'absolute';
+  const padding = 60;
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  // Stay within card boundaries
-  const maxX = cardRect.width - btnRect.width - 40;
-  const maxY = cardRect.height - btnRect.height - 40;
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+  const randomX = Math.max(padding, Math.random() * maxX);
+  const randomY = Math.max(padding, Math.random() * maxY);
 
   noBtn.style.left = randomX + "px";
   noBtn.style.top = randomY + "px";
