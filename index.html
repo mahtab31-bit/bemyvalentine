@@ -114,25 +114,22 @@ button {
   z-index: 5;
 }
 .planet {
-  position: absolute; top: 50%; left: 50%; width: 65px; height: 65px;
-  margin: -32px; border-radius: 12px; overflow: hidden;
-  box-shadow: 0 0 15px rgba(244,114,182,0.3); border: 2px solid rgba(255,255,255,0.2);
+  position: absolute; top: 50%; left: 50%; width: 85px; height: 85px;
+  margin: -42.5px; border-radius: 50%; overflow: hidden;
+  box-shadow: 0 0 20px rgba(244,114,182,0.4); border: 2px solid rgba(255,255,255,0.4);
 }
 .planet img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Animation timings and distances for 12 images */
+/* Unique Orbit Diameters for visibility */
 .p1 { animation: orb 15s linear infinite; --d: 110px; }
-.p2 { animation: orb 22s linear infinite reverse; --d: 140px; }
-.p3 { animation: orb 30s linear infinite; --d: 85px; }
-.p4 { animation: orb 18s linear infinite; --d: 125px; --delay: -2s; }
-.p5 { animation: orb 25s linear infinite reverse; --d: 100px; --delay: -5s; }
-.p6 { animation: orb 20s linear infinite; --d: 150px; --delay: -10s; }
-.p7 { animation: orb 28s linear infinite reverse; --d: 115px; --delay: -3s; }
-.p8 { animation: orb 14s linear infinite; --d: 95px; --delay: -8s; }
-.p9 { animation: orb 35s linear infinite reverse; --d: 135px; --delay: -12s; }
-.p10 { animation: orb 19s linear infinite; --d: 120px; --delay: -1s; }
-.p11 { animation: orb 24s linear infinite reverse; --d: 105px; --delay: -6s; }
-.p12 { animation: orb 21s linear infinite; --d: 145px; --delay: -15s; }
+.p2 { animation: orb 22s linear infinite reverse; --d: 180px; }
+.p3 { animation: orb 30s linear infinite; --d: 250px; }
+.p4 { animation: orb 18s linear infinite; --d: 145px; --delay: -2s; }
+.p5 { animation: orb 25s linear infinite reverse; --d: 215px; --delay: -5s; }
+.p6 { animation: orb 20s linear infinite; --d: 285px; --delay: -10s; }
+.p7 { animation: orb 28s linear infinite reverse; --d: 320px; --delay: -3s; }
+.p8 { animation: orb 14s linear infinite; --d: 360px; --delay: -8s; --speed: 14s;}
+.p9 { animation: orb 35s linear infinite reverse; --d: 390px; --delay: -12s; }
 
 @keyframes orb {
   from { transform: rotate(0deg) translateX(var(--d)) rotate(0deg); }
@@ -194,18 +191,15 @@ button {
     <p>Every memory has its own orbit.</p>
     <div class="orbit">
       <div class="orbit-center">You & Me ✨</div>
-      <div class="planet p1"><img src="./2.png"></div>
-      <div class="planet p2"><img src="./4.png"></div>
-      <div class="planet p3"><img src="./3.png"></div>
-      <div class="planet p4"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM.jpeg"></div>
-      <div class="planet p5"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM (1).jpeg"></div>
-      <div class="planet p6"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM (2).jpeg"></div>
-      <div class="planet p7"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM.jpeg"></div>
-      <div class="planet p8"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM (1).jpeg"></div>
-      <div class="planet p9"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM (2).jpeg"></div>
-      <div class="planet p10"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM.jpeg"></div>
-      <div class="planet p11"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM (1).jpeg"></div>
-      <div class="planet p12"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM (2).jpeg"></div>
+      <div class="planet p1"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM.jpeg"></div>
+      <div class="planet p2"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM (1).jpeg"></div>
+      <div class="planet p3"><img src="WhatsApp Image 2026-02-13 at 12.21.42 PM (2).jpeg"></div>
+      <div class="planet p4"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM.jpeg"></div>
+      <div class="planet p5"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM (1).jpeg"></div>
+      <div class="planet p6"><img src="WhatsApp Image 2026-02-13 at 12.21.43 PM (2).jpeg"></div>
+      <div class="planet p7"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM.jpeg"></div>
+      <div class="planet p8"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM (1).jpeg"></div>
+      <div class="planet p9"><img src="WhatsApp Image 2026-02-13 at 12.21.44 PM (2).jpeg"></div>
     </div>
     <button onclick="go(2)">Keep going</button>
   </div>
