@@ -157,15 +157,15 @@ button {
 }
 
 #noBtn {
-  position: relative; /* Fixed: starts relative in the layout */
-  transition: transform 0.2s ease, top 0.2s ease, left 0.2s ease;
+  position: relative;
+  z-index: 50;
 }
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="https://www.chosic.com/wp-content/uploads/2021/04/Lofi-Study-Calm-Peaceful-Piano.mp3" type="audio/mpeg">
+  <source src="https://assets.mixkit.co/music/preview/mixkit-lo-fi-night-dreams-433.mp3" type="audio/mpeg">
 </audio>
 
 <div class="screen intro active">
@@ -191,9 +191,9 @@ button {
     <p>Every memory has its own orbit.</p>
     <div class="orbit">
       <div class="orbit-center">You & Me ✨</div>
-      <div class="planet p1"><img src="./2.png" alt="Mem 1"></div>
-      <div class="planet p2"><img src="./4.png" alt="Mem 2"></div>
-      <div class="planet p3"><img src="./3.png" alt="Mem 3"></div>
+      <div class="planet p1"><img src="./2.png" alt="Memory 1"></div>
+      <div class="planet p2"><img src="./4.png" alt="Memory 2"></div>
+      <div class="planet p3"><img src="./3.png" alt="Memory 3"></div>
     </div>
     <button onclick="go(2)">Keep going</button>
   </div>
@@ -270,7 +270,10 @@ function go(n) {
 function startUniverse() {
   const audio = document.getElementById("bgMusic");
   audio.volume = 0.5;
-  audio.play().catch(e => console.log("Audio failed", e));
+  audio.play().catch(e => {
+      console.log("Autoplay check:", e);
+      // Browser might need one more click if it's very strict
+  });
   go(0);
 }
 
@@ -294,25 +297,21 @@ function celebrate() {
   document.getElementById('noBtn').style.display = 'none';
 }
 
-/* IMPROVED NO BUTTON: Starts static, stays within card area */
+/* NO BUTTON Logic - Starts static, moves only on hover */
 const noBtn = document.getElementById("noBtn");
 const finalCard = document.getElementById("finalCard");
-let hasMoved = false;
 
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 function moveButton() {
-  if(!hasMoved) {
-      // First time moving: switch to absolute so it can jump freely inside card
-      noBtn.style.position = 'absolute';
-      hasMoved = true;
-  }
-  
   const cardRect = finalCard.getBoundingClientRect();
   const btnRect = noBtn.getBoundingClientRect();
 
-  // Stay within card bounds (with 40px padding)
+  // Set to absolute only after first hover to allow "jumping"
+  noBtn.style.position = 'absolute';
+
+  // Stay within card boundaries
   const maxX = cardRect.width - btnRect.width - 40;
   const maxY = cardRect.height - btnRect.height - 40;
 
@@ -321,7 +320,7 @@ function moveButton() {
 
   noBtn.style.left = randomX + "px";
   noBtn.style.top = randomY + "px";
-  noBtn.style.margin = "0"; // Remove default margins once it's flying
+  noBtn.style.margin = "0";
 }
 </script>
 
